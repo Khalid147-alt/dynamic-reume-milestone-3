@@ -1,101 +1,263 @@
-import Image from "next/image";
+"use client"
+import { useState, FormEvent } from 'react';
+import styles from './styles/Home.module.css';
+
+interface Education {
+  school: string;
+  degree: string;
+  year: string;
+}
+
+interface Experience {
+  company: string;
+  position: string;
+  duration: string;
+  description: string;
+}
+
+interface ResumeData {
+  name: string;
+  email: string;
+  phone: string;
+  education: Education[];
+  experience: Experience[];
+  skills: string[];
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [formData, setFormData] = useState<ResumeData>({
+    name: '',
+    email: '',
+    phone: '',
+    education: [{ school: '', degree: '', year: '' }],
+    experience: [{ company: '', position: '', duration: '', description: '' }],
+    skills: [''],
+  });
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  const [showResume, setShowResume] = useState(false);
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    setShowResume(true);
+  };
+
+  const addEducation = () => {
+    setFormData({
+      ...formData,
+      education: [...formData.education, { school: '', degree: '', year: '' }],
+    });
+  };
+
+  const addExperience = () => {
+    setFormData({
+      ...formData,
+      experience: [...formData.experience, { company: '', position: '', duration: '', description: '' }],
+    });
+  };
+
+  const addSkill = () => {
+    setFormData({
+      ...formData,
+      skills: [...formData.skills, ''],
+    });
+  };
+
+  return (
+    <div className={styles.container}>
+      {!showResume ? (
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <h1>Resume Builder</h1>
+          
+          <section className={styles.section}>
+            <h2>Personal Information</h2>
+            <input
+              type="text"
+              placeholder="Full Name"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              required
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <input
+              type="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              required
+            />
+            <input
+              type="tel"
+              placeholder="Phone"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              required
+            />
+          </section>
+
+          <section className={styles.section}>
+            <h2>Education</h2>
+            {formData.education.map((edu, index) => (
+              <div key={index} className={styles.fieldGroup}>
+                <input
+                  type="text"
+                  placeholder="School/University"
+                  value={edu.school}
+                  onChange={(e) => {
+                    const newEducation = [...formData.education];
+                    newEducation[index].school = e.target.value;
+                    setFormData({ ...formData, education: newEducation });
+                  }}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Degree"
+                  value={edu.degree}
+                  onChange={(e) => {
+                    const newEducation = [...formData.education];
+                    newEducation[index].degree = e.target.value;
+                    setFormData({ ...formData, education: newEducation });
+                  }}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Year"
+                  value={edu.year}
+                  onChange={(e) => {
+                    const newEducation = [...formData.education];
+                    newEducation[index].year = e.target.value;
+                    setFormData({ ...formData, education: newEducation });
+                  }}
+                  required
+                />
+              </div>
+            ))}
+            <button type="button" onClick={addEducation} className={styles.addButton}>
+              Add Education
+            </button>
+          </section>
+
+          <section className={styles.section}>
+            <h2>Experience</h2>
+            {formData.experience.map((exp, index) => (
+              <div key={index} className={styles.fieldGroup}>
+                <input
+                  type="text"
+                  placeholder="Company"
+                  value={exp.company}
+                  onChange={(e) => {
+                    const newExperience = [...formData.experience];
+                    newExperience[index].company = e.target.value;
+                    setFormData({ ...formData, experience: newExperience });
+                  }}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Position"
+                  value={exp.position}
+                  onChange={(e) => {
+                    const newExperience = [...formData.experience];
+                    newExperience[index].position = e.target.value;
+                    setFormData({ ...formData, experience: newExperience });
+                  }}
+                  required
+                />
+                <input
+                  type="text"
+                  placeholder="Duration"
+                  value={exp.duration}
+                  onChange={(e) => {
+                    const newExperience = [...formData.experience];
+                    newExperience[index].duration = e.target.value;
+                    setFormData({ ...formData, experience: newExperience });
+                  }}
+                  required
+                />
+                <textarea
+                  placeholder="Description"
+                  value={exp.description}
+                  onChange={(e) => {
+                    const newExperience = [...formData.experience];
+                    newExperience[index].description = e.target.value;
+                    setFormData({ ...formData, experience: newExperience });
+                  }}
+                  required
+                />
+              </div>
+            ))}
+            <button type="button" onClick={addExperience} className={styles.addButton}>
+              Add Experience
+            </button>
+          </section>
+
+          <section className={styles.section}>
+            <h2>Skills</h2>
+            {formData.skills.map((skill, index) => (
+              <input
+                key={index}
+                type="text"
+                placeholder="Skill"
+                value={skill}
+                onChange={(e) => {
+                  const newSkills = [...formData.skills];
+                  newSkills[index] = e.target.value;
+                  setFormData({ ...formData, skills: newSkills });
+                }}
+                required
+              />
+            ))}
+            <button type="button" onClick={addSkill} className={styles.addButton}>
+              Add Skill
+            </button>
+          </section>
+
+          <button type="submit" className={styles.submitButton}>
+            Generate Resume
+          </button>
+        </form>
+      ) : (
+        <div className={styles.resume}>
+          <button onClick={() => setShowResume(false)} className={styles.backButton}>
+            Back to Form
+          </button>
+          
+          <h1>{formData.name}</h1>
+          <p>{formData.email} | {formData.phone}</p>
+
+          <section>
+            <h2>Education</h2>
+            {formData.education.map((edu, index) => (
+              <div key={index}>
+                <h3>{edu.school}</h3>
+                <p>{edu.degree} - {edu.year}</p>
+              </div>
+            ))}
+          </section>
+
+          <section>
+            <h2>Experience</h2>
+            {formData.experience.map((exp, index) => (
+              <div key={index}>
+                <h3>{exp.company}</h3>
+                <p>{exp.position} | {exp.duration}</p>
+                <p>{exp.description}</p>
+              </div>
+            ))}
+          </section>
+
+          <section>
+            <h2>Skills</h2>
+            <div className={styles.skillsList}>
+              {formData.skills.map((skill, index) => (
+                <span key={index} className={styles.skill}>
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </section>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      )}
     </div>
   );
 }

@@ -1,0 +1,126 @@
+.container {
+  min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(135deg, #ff0000 0%, #800080 50%, #008000 100%);
+  color: white;
+}
+
+.form {
+  max-width: 800px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.fieldGroup {
+  margin-bottom: 1rem;
+}
+
+.section h2 {
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.form input,
+.form textarea {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.form input::placeholder,
+.form textarea::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.addButton {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 0.5rem 1rem;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.submitButton {
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  padding: 1rem 2rem;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+}
+
+.resume {
+  max-width: 800px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 10px;
+  color: #333;
+}
+
+.backButton {
+  background: rgba(0, 0, 0, 0.2);
+  border: none;
+  padding: 0.5rem 1rem;
+  color: #333;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.skillsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .form {
+    padding: 1rem;
+  }
+
+  .resume {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0.5rem;
+  }
+
+  .form input,
+  .form textarea {
+    font-size: 16px;
+  }
+
+  .submitButton {
+    padding: 0.8rem 1.5rem;
+  }
+}
